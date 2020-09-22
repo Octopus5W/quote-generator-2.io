@@ -27,17 +27,23 @@ function addFavorite() {
 };
 // verification anti-doublon
 let notTwoTime = function (myQuote, array) {
-    array.forEach((array) => {
+    if (array == null){
+        console.log('null')
+        myStorage();
+    }
+    else{
+        array.forEach((array) => {
         if (myQuote == array) {
             return quote.innerText = "cette quote est déjà dans tes favoris";;
         }
         myStorage();
     });
+    }
 };
 // initialisation des tableaux de stockages
 let storageQuote = [];
 let storageAuthor = [];
-// stockage dans localStorage
+// stockage dans localStorage   
 let myStorage = function () {
     // console.log(localStorage.length)
     storageQuote.push(quote.innerText);
