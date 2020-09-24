@@ -2,8 +2,6 @@ let intro = document.getElementById('intro');
 let quote = document.getElementById('quote');
 let author = document.getElementById('author');
 
-let data
-
 // bouton générateur de quote
 function generator() {
     fetch("https://breaking-bad-quotes.herokuapp.com/v1/quotes")
@@ -23,35 +21,34 @@ function generator() {
 // bouton d'ajout aux favoris (localStorage)
 function addFavorite() {
     notTwoTime(quote.innerText, storageQuote)
-    console.log('add')
 };
+
+
 // verification anti-doublon
 let notTwoTime = function (myQuote, array) {
-    if (array == null){
-        console.log('null')
+    if (array.length == 0) {
         myStorage();
     }
-    else{
+    else {
         array.forEach((array) => {
-        if (myQuote == array) {
-            return quote.innerText = "cette quote est déjà dans tes favoris";;
-        }
-        myStorage();
-    });
+            if (myQuote == array) {
+                return quote.innerText = "cette quote est déjà dans tes favoris";;
+            }
+        });
     }
 };
-// initialisation des tableaux de stockages
-let storageQuote = [];
-let storageAuthor = [];
+// initialisation du tableau de stockage
+
+console.log(myTempStorage[0].quote);
 // stockage dans localStorage   
 let myStorage = function () {
-    // console.log(localStorage.length)
-    storageQuote.push(quote.innerText);
-    storageAuthor.push(author.innerText);
-    console.log(storageQuote)
-    localStorage.setItem('quote', JSON.stringify(storageQuote));
-    localStorage.setItem('author', JSON.stringify(storageAuthor));
-    // console.log(localStorage.length)
+    let myTempStorage = new [
+        {
+            quote: quote.innerText,
+            author: author.innerText
+        }
+    ];
+    localStorage.setItem('myTempStorage', JSON.stringify(myTempStorage));
 };
 
 
@@ -64,32 +61,54 @@ let myRemoveChild = function () {
     }
 };
 
+
+// let myQuotes = [
+//     {
+//         quote: "Blablaldlfksljf",
+//         author: "Sebastien Cardon"
+//     },
+//     {
+//         quote: "Blablaldlfksljf",
+//         author: "Sebastien Cardon"
+//     },
+//     {
+//         quote: "Blablaldlfksljf",
+//         author: "Sebastien Cardon"
+//     },
+//     {
+//         quote: "Blablaldlfksljf",
+//         author: "Sebastien Cardon"
+//     }
+// ];
+
+// console.log(myQuotes[0].quote)
+
+
+
+
 // add élément HTML dans le conteneur (section avec id 'droite' dans l'HTML)
 let addElement = function (cpt) {
     // ajout d'un paragraphe quote
-    pQuote = document.createElement('p');
+    let pQuote = document.createElement('p');
     pQuote.class = "quote";
     pQuote.id = "quote" + cpt;
-    pQuote.textContent = quoteLS;
+    pQuote.textContent = JSON.parse(localStorage.getItem(myQuote[cpt]));
     // ajout d'un paragraphe author
-    pAuthor = document.createElement('p');
+    let pAuthor = document.createElement('p');
     pAuthor.class = "author";
     pAuthor.id = "author" + cpt;
-    pAuthor.textContent = authorLS;
+    pAuthor.textContent = g;
 };
 
 
 // bouton affichage des favoris
 let affFavorite = function () {
-    console.log('start')
     myRemoveChild();
-    if (true) {
-        console.log('if')
+    if (localStorage.length == 2) {
         storageQuote = JSON.parse(localStorage.getItem('quote'));
-        console.log(storageQuote)
         storageAuthor = JSON.parse(localStorage.getItem('author'));
         for (i = 0; i < storageQuote.length; i++) {
-            addElement(i+1)
+            addElement(i);
         }
     }
     else {
@@ -100,10 +119,6 @@ let affFavorite = function () {
         document.getElementById("droite").appendChild(noFavorite);
     }
 };
-
-
-
-
 
 
 // bouton supprimer les favoris (localStorage)
